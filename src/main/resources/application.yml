@@ -1,0 +1,25 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  
+  datasource:
+    platform: mysql
+    url: jdbc:mysql://localhost:3306/shareapprovaldb?serverTimezone=America/Sao_Paulo&createDatabaseIfNotExist=true
+    username: je
+    password: toor
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+      format_sql: true
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+  profiles:
+    active: dev
