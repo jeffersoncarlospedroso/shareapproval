@@ -29,12 +29,14 @@ public class Upload implements Serializable{
 	private String path;
 	
 	@NotNull
+	private String fileName;
+	
+	@NotNull
 	private String description;
 
 	private Date uploadDate;
 	
 	private Date approvalDate;
-	
 			
 	private boolean waitingApproval;
 	
@@ -47,6 +49,7 @@ public class Upload implements Serializable{
 	private User userUploader;
 
 	public Upload() {
+		
 	}
 
 	public Upload(Long id, @NotNull String path, @NotNull String description, Date uploadDate, Date approvalDate,
@@ -126,6 +129,13 @@ public class Upload implements Serializable{
 		this.userUploader = userUploader;
 	}
 
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
 
 
 }
