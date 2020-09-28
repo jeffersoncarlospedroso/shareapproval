@@ -32,13 +32,13 @@ public class UploadServiceImpl implements UploadService {
 		
 		 try {
 		       
-		        saveUploadedFile(file.getFile());
+		       String path =  saveUploadedFile(file.getFile());
 		        
 		        Upload up = new Upload();
 		        up.setId(null);
 		        up.setApprovalDate(null);
 		        up.setDescription(file.getDescription());
-		        up.setPath("falta");
+		        up.setPath(path);
 		        
 		        up.setUploadDate(new Date());
 		        up.setUserUploader(AuthenticationUtils.getAuthenticatedUser());
@@ -53,12 +53,15 @@ public class UploadServiceImpl implements UploadService {
 		
 	}
 
-	private void saveUploadedFile(MultipartFile file) throws IOException {
+	private String saveUploadedFile(MultipartFile file) throws IOException {
 	    if (!file.isEmpty()) {
+	    	
 	        byte[] bytes = file.getBytes();
 	        Path path = Paths.get("" + file.getOriginalFilename());
 	        Files.write(path, bytes);
+	        return path.toString();
 	    }
+		return null;
 	}
 
 	@Override
