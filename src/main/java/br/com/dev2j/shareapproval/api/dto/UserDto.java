@@ -12,7 +12,7 @@ public class UserDto implements Serializable {
     private Long id;
     private String login;
     private String email;
-    private UserType usertype;
+    private UserType type;
 
     public Long getId() {
         return id;
@@ -31,12 +31,13 @@ public class UserDto implements Serializable {
 		this.login = login;
 	}
 
-	public UserType getUsertype() {
-		return usertype;
+	
+	public UserType getType() {
+		return type;
 	}
 
-	public void setUsertype(UserType usertype) {
-		this.usertype = usertype;
+	public void setType(UserType type) {
+		this.type = type;
 	}
 
 	public String getEmail() {

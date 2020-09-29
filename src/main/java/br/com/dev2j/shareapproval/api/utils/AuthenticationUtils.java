@@ -15,15 +15,27 @@ public class AuthenticationUtils {
 	}
 
 
-	public static User checkAndGetAuthenticatedUser(final Long usuarioId) {
-		User usuario = getAuthenticatedUser();
+	public static User checkAndGetAuthenticatedUser(final Long userId) {
+		User user = getAuthenticatedUser();
 
-		if (usuarioId != null && !usuarioId.equals(usuario.getId())) {
+		if (userId != null && !userId.equals(user.getId())) {
 			throw new AuthorizationException("Nao eh possivel atualizar item com id diferente do usuario autenticado.");
 		}
 
-		return usuario;
+		return user;
 	}
 
+	public static User checkApprovalPermission() {
+		User user = getAuthenticatedUser();
+		System.out.println("Role - "+ user.getType());
+
+		if ( (user.getType().equals(UserType.ADMIN)) || (user.getType().equals(UserType.APPROVAL))) {
+			return user;
+		}else {
+			throw new AuthorizationException("Nao eh visualizar item com esse perfil.");
+		}
+
+		
+	}
 
 }

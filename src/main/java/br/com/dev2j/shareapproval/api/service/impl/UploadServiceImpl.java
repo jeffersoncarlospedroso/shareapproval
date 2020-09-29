@@ -4,16 +4,22 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import br.com.dev2j.shareapproval.api.dto.UploadApprovalDto;
 import br.com.dev2j.shareapproval.api.dto.UploadFileDto;
 import br.com.dev2j.shareapproval.api.model.Upload;
 import br.com.dev2j.shareapproval.api.repository.UploadRepository;
 import br.com.dev2j.shareapproval.api.service.UploadService;
 import br.com.dev2j.shareapproval.api.utils.AuthenticationUtils;
+import br.com.dev2j.shareapproval.exception.ObjectNotFoundException;
 
 
 @Service
@@ -71,16 +77,31 @@ public class UploadServiceImpl implements UploadService {
 	}
 
 
+
 	@Override
-	public Upload approveUpload(String email) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Upload> waitingApproval(Boolean approved) {
+		 List<Upload> upload = repository.findByWaitingApproval(approved);
+		 
+		 System.out.println(upload.size());
+		 
+	      return mapper.map(upload, new TypeToken<List<Upload>>() {}.getType());
+	
+	}
+
+	@Override
+	public void approvalUpload(UploadApprovalDto uploadApprovalDTO) {
+		Upload upload =  Optional.ofNullable(repository.findById(uploadApprovalDTO.getId()).get())
+				.orElseThrow(() -> new ObjectNotFoundException("Não foi possivel aprovar o arquivo."));
+		
+		upload.setApprovalDate(new Date());
+		upload.setApproved(uploadApprovalDTO.getApproved());
+		upload.setWaitingApproval(false);
+		upload.setUserApproval(AuthenticationUtils.getAuthenticatedUser());
+		upload.setApprovalObservation(uploadApprovalDTO.getApprovalObservation());
+		
+		repository.save(upload);
 	}
     
-
-
- 
-	
 
 
 }

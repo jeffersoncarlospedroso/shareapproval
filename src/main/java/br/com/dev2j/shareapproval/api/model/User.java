@@ -107,6 +107,12 @@ public class User implements UserDetails {
 		this.roles.add(role.getDesc());
 	}
 	
+	
+
+	public List<String> getRoles() {
+		return roles;
+	}
+
 
 	public void setPassword(String password) {
 		this.password = password;
